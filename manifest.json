@@ -1,0 +1,38 @@
+{
+    "name" : "moodleSync Extension",
+    "manifest_version" : 2 ,
+    "version" : "0.1",
+    "content_scripts":[
+      {
+        "matches":[
+
+          "<all_urls>"
+
+        ],
+        "js":["jquery-3.5.1.min.js","content.js"],
+        "run_at": "document_end"
+      }
+    ],
+    "background":{
+      
+      "scripts":["jquery-3.5.1.min.js","firebase-app.js","firebase-firestore.js","firebase.js","background.js"]
+    },
+    "page_action":{
+      "default_icon":"icon.png",
+      "default_popup":"popup.html",
+      "default_title":"This Extension Developed By Jay !"
+    },
+    "icons":{
+      "16":"icon16.png",
+      "48":"icon48.png",
+      "128":"icon128.png"
+    },
+    "permissions": [
+      "http://*/*",
+      "https://*/*",
+      "storage",
+      "tabs",
+       "webNavigation"
+  ],
+  "content_security_policy": "script-src 'self' https://www.gstatic.com/ https://*.firebaseio.com https://www.googleapis.com; object-src 'self'"
+}
