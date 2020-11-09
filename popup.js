@@ -1,250 +1,257 @@
 
 
-// const getAnswers = ans => {
+/*********  Diffrent Section Variables    ******** */
+let loginSection = document.getElementsByClassName("login")[0];
+let processSection = document.getElementsByClassName("process")[0];
+let displaySection = document.getElementsByClassName("display_Sections")[0];
+let bgPage = chrome.extension.getBackgroundPage();
 
-//   console.log("Ans is come !");
-//   console.log(data)
 
-// };
 
 
 const getQueastion = data => {
 
-  //  console.log("Data is Comme")
-  // console.log(data.question)
+    try {
+        if (data.question) {
+            // Get Question Text From Content Scritpt
+            let quesionText = document.getElementsByClassName("quiz-question")[0];
+            quesionText.innerText = "";
 
-  let mainQue = "";
-  if (data.question) {
+            if (data.question.length > 1) {
+
+                for (let i = 0; i < data.question.length; i++) {
+
+
+                    quesionText.innerText += ("Q" + (i + 1) + " : " + data.question[i]).toString().substr(0, 45) + "...\n\n";
+                }
+                bgPage.searchAnswer().then(allDoc => {
+                    let counter = 0;
+                    allDoc.docs.map((doc) => {
+                        let ansers = "";
+
+                        for (const obj in doc.data()) {
+
+                            let quesionsdata = data.question.reverse();
+                            console.log(quesionsdata)
+
+                            for (let i = 0; i < data.question.length; i++) {
+
+                                if (obj.toString().trim().includes(quesionsdata[i].toString().replaceAll(/[^a-zA-Z ]/g, "").trim())) {
+                                    ansers += doc.data()[obj] + " , ";
+                                    console.log(obj.toString().trim(),ansers)
+                                    counter++;
+                                }
+                            }
+                        }
+                        if(ansers != ""){
+                        let e = document.createElement('tr')
+                        e.innerHTML = "<tr> <td>"+doc.id+"</td> <td>"+ansers.replace(/\ , $/, '');+"</td> </tr>";
+                        document.getElementsByTagName("tbody")[0].appendChild(e);
+                        console.log(doc.id, " ", );
+                        }
+                    });
+
+                    if(counter === 0){
+                                 let e = document.createElement('tr')
+                                 e.innerHTML = "<tr> <td colspan='2'> No Answer Found ! </td></tr>";
+                                document.getElementsByTagName("tbody")[0].appendChild(e);
+                                
+                    }
+                });
 
 
 
 
-    if (data.qtype === "select") {
+            } else {
 
-      let que = ""
+                quesionText.innerText += ("Q1 : " + data.question[0]).toString().substr(0, 45) + "...\n\n";
+                bgPage.searchAnswer().then(allDoc => {
+                    let counter = 0;
+                    allDoc.docs.map((doc) => {
 
-      for (let i = 0; i < data.question.length; i++) {
+                        console.log(doc.data())
+                       
+                        for (const obj in doc.data()) {
+                            if (obj.toString().trim().includes(data.question[0].toString().replaceAll(/[^a-zA-Z ]/g, "").trim())) {
+                              
+                                let e = document.createElement('tr')
+                                e.innerHTML = "<tr> <td>"+doc.id+"</td> <td>"+doc.data()[obj].toString().substr(0, 45)+"</td> </tr>";
+                                document.getElementsByTagName("tbody")[0].appendChild(e);
+                                console.log(doc.data()[obj], doc.id);
+                                counter++;
+                            }
 
-        que += (i + 1) + " ) " + data.question[i] + "\n\n";
-        
-      }
+                        }
+                        
 
-      mainQue += data.question[0];
+                    });
 
-      document.getElementById("Que").innerText = que;
-      //  mainQue = que;
-      //console.log(que);
+                    if(counter === 0){
+                                 let e = document.createElement('tr')
+                                e.innerHTML = "<tr> <td colspan='2'> No Answer Found ! </td></tr>";
+                                document.getElementsByTagName("tbody")[0].appendChild(e);
+                                
+                    }
+                });
 
+            }
+
+        } else {
+
+            console.log("Data Is Not Get From Content Page !");
+
+        }
+    } catch (e) {
+        if (e instanceof TypeError) {
+            console.log(e, true);
+        } else {
+            console.log(e, false);
+        }
     }
-    else if (data.qtype === "text") {
 
-
-      let que = ""
-
-      for (let i = 0; i < data.question.length; i++) {
-
-        que += (i + 1) + " ) " + data.question[i] + "\n\n";
-        mainQue += data.question[i];
-      }
-
-      document.getElementById("Que").innerText = que;
-      //mainQue = que;
-
-    }
-    else if (data.qtype === "tradio") {
-
-      let que = ""
-
-      que += " 1 ) " + data.question[0] + "\n\n";
-      mainQue = data.question[0];
-
-      document.getElementById("Que").innerText = que;
-      // console.log(que);
-
-
-    }
-    else if (data.qtype === "mradio") {
-
-
-      let que = ""
-
-      que += " 1 ) " + data.question[0] + "\n\n";
-      mainQue = data.question[0];
-      document.getElementById("Que").innerText = que;
-      //   console.log(que);
-      //     mainQue = que;
-
-    }
-    else {
-
-      //Error Msg
-
-    }
-
-  } else {
-
-
-    document.getElementById('Que').textContent = "Not able to detect question !";
-    $("#tabls").hide();
-
-  }
-
-  // chrome.tabs.query({
-  //   active: true,
-  //   currentWindow: true
-  // }, tabs => {
-  //   chrome.tabs.sendMessage(
-  //     tabs[0].id,
-  //     { from: 'popup', subject: 'ans', question: mainQue },
-  //     getAnswers);
-  // });
-
-
-  // querySnapshot => {
-
-
-  //   querySnapshot.forEach((doc) => {
-
-  //     $(doc.data()).each(function () {
-
-  //       console.log(this.question.toString().trim().localeCompare(mainQue.trim()))
-  //   //    if (this.question.toString().localeCompare(mainQue) === 0) {
-
-  //   console.log(this.question.toString().trim()+"==="+ mainQue.toString().trim())
-  //         console.log("This Questions : " + this.question)
-  //         console.log("This Answer : " + this.answer)
-  //         console.log("This Name : " + doc.id)
-
-  //    //   }
-
-
-  //     })
-
-
-  let  hasData =false;
-
-  searchAnswer().on('value', function (snapshort) {
-
-    //snapshort.val()
-
-    snapshort.forEach((val) => {
-
-      if (val.val().que.toString().trim().localeCompare(mainQue.trim()) === 0) {
-        $('#tables').append('<tr><td>' + val.val().name + '</td><td>' + val.val().ans + '</td></tr>');
-        hasData = true;
-      }
-      // console.log("----------------------------------------------------------------------");
-      // console.log(val.val().que.toString().trim().localeCompare(mainQue.trim()));
-      // console.log(val.val().que);
-      // console.log(val.val().ans);
-      // console.log(val.val().name);
-      // console.log("----------------------------------------------------------------------");
-
-
-
-      //  //   console.log(this.question.toString().trim().localeCompare(mainQue.trim()))
-
-    });
-
-
-  });
-
-
-  // if(hasData === false){
-  //   $('#tables').hide();
-  //   $('#msg').text("Not Repate Question !")
-  //   $('#msg').show();
-   
-  // }else{
-
-  //   $('#tables').show();
-  //   $('#msg').hide();
-  // }
 
 };
 
-//document.getElementById('Que').textContent = data.question;
 
 
 
+chrome.storage.sync.get(["data"], function (items) {
 
-// Once the DOM is ready...
-window.addEventListener('DOMContentLoaded', () => {
-  // ...query for the active tab...
-  chrome.tabs.query({
-    active: true,
-    currentWindow: true
-  }, tabs => {
-    // ...and send a request for the DOM info...
-    chrome.tabs.sendMessage(
-      tabs[0].id,
-      { from: 'popup', subject: 'question' },
-      getQueastion)
+    /**
+     *  This event is check if user is login or not once user login
+     *  thair data is store in local storage if user is not register
+     *  or login else condation execute that take data from user
+     */
 
-
-
-
-  });
-});
-
-
-
-
-
-
-// chrome.runtime.onMessage.addListener(
-//   function (request, sender, sendResponse) {
-//     if (request.msg === "getAns") {
-//       //  To do something
-//       alert(request.data)
-
-//     }
-//   }
-// );
-
-
-
-
-$(function () {
-
-
-
-
-  chrome.storage.sync.get(/* String or Array */["data"], function (items) {
     if (items.data) {
 
-      $("#sections_login").hide();
-      $("#sections_display").show();
 
+
+
+
+        console.log("This is a valide user ");
+        loginSection.style.display = 'none';
+        processSection.style.display = 'none';
+        displaySection.style.display = "block";
+
+        chrome.tabs.query({
+            active: true,
+            currentWindow: true
+        }, tabs => {
+            try {
+                chrome.tabs.sendMessage(tabs[0].id, { from: 'popup', subject: 'question' }, getQueastion)
+            }
+            catch (e) {
+                if (e instanceof TypeError) {
+                    console.log(e, true);
+                } else {
+                    console.log(e, false);
+                }
+
+            }
+        });
+
+
+
+
+    } else {
+
+        loginSection.style.display = 'block';
+        processSection.style.display = 'none';
+
+        document.getElementById("login_btn").addEventListener("click", function () {
+
+            /**
+             *  This event is occur when usr  click on login button
+             *  
+             */
+
+            let name = document.getElementById("name").value.toString();
+            let email = document.getElementById("email").value.toString();
+            let password = document.getElementById("password").value.toString();
+            let errorMsg = document.getElementById("errMsg");
+
+            if (name != "" && email != "" && password != null) {
+
+                console.log("Name :-", name);
+                console.log("Email :-", email);
+                console.log("Password :-", password);
+                loginSection.style.display = 'none';
+                processSection.style.display = 'block';
+                displaySection.style.display = "none";
+                bgPage.userAuthoction(email, password).catch(function (error) {
+                    // Handle Errors here.
+                    var errorCode = error.code;
+                    var errorMessage = error.message;
+
+                    if (errorCode === 'auth/wrong-password') {
+                        errorMsg.innerText = 'Wrong password.';
+                        //chrome.runtime.sendMessage({ type:"loginResponseError" ,status: true, data:"Wrong password."});
+                    } else {
+                        errorMsg.innerText = errorMessage.toString();  //chrome.runtime.sendMessage({ type:"loginResponseError" ,status: true, data:errorMessage});
+
+
+                    }
+
+
+                }).then((data) => {
+
+
+                    if (data) {
+
+                        console.log("This is a valide user ");
+
+                        bgPage.saveUserName(name);
+
+                        let data = {
+
+                            "name": name,
+                            "email": email
+
+                        }
+
+                        chrome.storage.sync.set({ "data": data }, function () {
+
+                            console.log("Data Save in local !");
+                        });
+
+                        loginSection.style.display = 'none';
+                        processSection.style.display = 'none';
+                        displaySection.style.display = "block";
+
+
+                    } else {
+
+
+                        console.log("This is not a valide user ");
+                        loginSection.style.display = 'block';
+                        processSection.style.display = 'none';
+                        displaySection.style.display = "none";
+
+                    }
+
+
+
+                });
+
+
+                //chrome.runtime.sendMessage({ type:"loginDetails" ,status: true, data:{"name":name,"email":email,"password":password}});
+
+
+
+            } else {
+
+                console.log("First fill all details !");
+            }
+
+
+        });
     }
-  });
-
-
-  $("#subData").click(function () {
-
-
-    let name = document.getElementById("first_name").value
-    let email = document.getElementById("email").value
-
-    let dat = {
-
-      "name": name,
-      "email": email
-
-    }
-
-    chrome.storage.sync.set({ "data": dat }, function () {
-      $("#sections_login").hide();
-      $("#sections_display").show();
-    });
-
-
-
-
-  });
-
-
-
-
-
 });
+
+
+
+
+
+
+

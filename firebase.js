@@ -12,76 +12,54 @@ var firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
-
-//console.log(firebase);
-
-var db = firebase.database();
+var db = firebase.firestore();
 
 
-// db.collection("cities").doc("LA").set({
-//     name: "Los Angeles",
-//     state: "CA",
-//     country: "USA"
-// })
-//     .then(function () {
-//         console.log("Document successfully written!");
-//     })
-//     .catch(function (error) {
-//         console.error("Error writing document: ", error);
-//     });
+
+function saveUserName(name){
+    
+ 
+    db.collection("quesions").doc(name).set({counter:0})
+    .then(function() {
+        console.log("login  successfully written!");
+    })
+    .catch(function(error) {
+        console.error("Error writing document: ", error);
+    });
+    
+
+}
+
+function saveQuestionAnswer(obj){
+
+    let que = obj.question.toString().replaceAll(/[^a-zA-Z ]/g, "");
+    db.collection("quesions").doc(obj.name).update({[que]:obj.answer})
+    .then(function() {
+        console.log("Quesion  successfully written!");
+    })
+    .catch(function(error) {
+        console.error("Error writing document: ", error);
+    }); 
+
+
+}
 
 
 function searchAnswer(){
 
+    return db.collection("quesions").get();
 
-
-        let gat =  db.ref("questions/");
-    
-    
-        return gat;
-
-    // db.collection("moodle").get().then(function(querySnapshot) {
-    //     querySnapshot.forEach(function(doc) {
-    //         // doc.data() is never undefined for query doc snapshots
-
-    //             $(doc.data()).each(function(){
-
-    //                            if(this.question.toString().includes(que))
-    //                             {
-                                    
-    //                                     console.log("This Questions : "+this.question)
-    //                                     console.log("This Answer : "+this.answer)
-    //                                     console.log("This Name : "+doc.id)
-    //                                     lists.push({"name":doc.id,"answer":this.answer})
-                                    
-
-    //                             }
-    //             });
-
-
-    //     });
-    // });
-
-
- 
-    
 }
 
+function userAuthoction(email , password){
 
-
-function saveData(name,que,ans){
-
-
-    db.ref("questions/").push({
-        name:name,
-        que:que,
-        ans:ans
-    });
+    console.log("Inside User Authoction !");
 
 
 
-
-    console.log("Data is Saved !");
+ return firebase.auth().signInWithEmailAndPassword(email, password);
+       
+   
 
 }
 

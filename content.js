@@ -1,348 +1,611 @@
+/*                Work On Content                             */
+//ToDo
+//0) get info about page is single page or one que page 
+//1) get Type of question
+//2) get Question text
+//3) get Answer text
+
+
 console.log("Chrome Extension is Loded !");
 
 
+function isPageMultiQuestions() {
+
+    /**
+     * This Function is Check How Meny Question in a singal page if multipal 
+     * questions in a single page this function return true other wise this 
+     * function return false
+     */
 
 
- 
-//Get Question Type 
-function getQuestionType() {
+    const howMenyQue = document.getElementsByClassName("qtext").length
 
-    var control = document.querySelectorAll('.clearfix input[type=text]')
-    var CTYPE = "text"
+    if (howMenyQue > 1) {
+        return true
 
-    if (control.length <= 0) {
+    } else {
 
-        control = document.querySelectorAll('.clearfix input[type=radio]')
-        CTYPE = "radio"
-
-        if (control.length === 0) {
-
-
-            control = document.querySelectorAll('.clearfix select')
-            CTYPE = "select"
-
-
-        }
-
-
+        return false
     }
 
-
-    // For Check How Meny Array of Input Type is Return
-    //  console.log(control)
-
-    let QType = CTYPE
-    let CLen = control.length
-
-
-    if (QType === 'radio') {
-
-
-
-        if (CLen > 2) {
-
-            console.log("Insiede Queastion type functinon -> This is option type")
-            return { type: 'mradio', len: CLen }
-
-        } else if (CLen === 2) {
-
-            console.log(" Insiede Queastion type functinon -> This is true false")
-            return { type: 'tradio', len: CLen }
-
-        }
-        else {
-
-
-            console.log("Insiede Queastion type functinon -> unknow question type !")
-            return 'null'
-
-
-        }
-
-    }
-    else if (QType === 'text') {
-
-        //  console.log("Insiede Queastion type functinon -> This is TextBox")
-        //   console.log(QType)
-        //   console.log(CLen)
-
-
-        return { type: 'text', len: CLen }
-    }
-    else if (QType === 'select') {
-
-        //   console.log("Insiede Queastion type functinon -> This is Multi Value ! ")
-        return { type: 'select', len: CLen }
-
-    }
-    else {
-
-        //  console.log("Insiede Queastion type functinon -> unknow question type !")
-        return 'null'
-
-    }
-
-
-}
-
-let getType = getQuestionType().type;
-
-let getLen = getQuestionType().len;
-
-//Get Question Text
-function getQuestionText() {
-
-
-    if (getType === 'select') {
-
-        let queList = []
-
-        // Get Question For Selection
-        if (getLen === 1) {
-
-
-            // Get Queastion text for one multi val
-
-            let Que = $(".subquestion").parent().contents().filter(function () {
-                return this.nodeType == 3;
-            })[0].nodeValue
-
-            console.log("Inside getQuestionText -> " + Que)
-
-            queList.push(Que);
-
-            return queList;
-
-        }
-        else if (getLen === 2) {
-
-
-            // Get Queastion text for tow multi val
-
-            for (let i = 0; i < getLen; i++) {
-
-                if ($(".subquestion")[0]) {
-                    let Que = $(".subquestion").parent().contents().filter(function () {
-                        return this.nodeType == 3;
-                    })[i].nodeValue
-                    queList.push(Que);
-                }
-                else if ($(".qtext")[0]) {
-
-
-
-                    let Que = $($(".qtext p")[i]).clone().children().remove().end().text();
-                    queList.push(Que);
-                }
-
-
-                // console.log(queList)
-
-            }
-
-            return queList;
-
-        }
-        else if (getLen === 3) {
-
-
-            // Get Queastion text for three multi val
-
-            for (let i = 0; i < getLen; i++) {
-
-                let Que = $(".subquestion").parent().contents().filter(function () {
-                    return this.nodeType == 3;
-                })[i].nodeValue
-
-
-                console.log("Inside getQuestionText -> " + Que)
-                queList.push(Que);
-            }
-
-
-            return queList;
-
-        }
-        else {
-
-
-            console.log("Inside getQuestionText -> Unspecify length type")
-            return null;
-
-        }
-
-
-    }
-    else if (getType === 'text') {
-
-        //   console.log("Inseid Question Text For text-> "+getLen)
-        //Here Comes For Text Value
-
-        let queList = []
-        if (getLen === 1) {
-            let Que = document.getElementsByClassName("qtext")[0].innerText
-            queList.push(Que);
-            // Here Comes For Ture Or False
-
-            return queList;
-        }
-        else if (getLen >= 2) {
-
-            let Que = $(".clearfix p").text().replaceAll("Answer", "______");
-            queList.push(Que);
-            return queList;
-        }
-
-
-    }
-    else if (getType === 'tradio') {
-
-
-        let queList = []
-
-
-        let Que = document.getElementsByClassName("qtext")[0].innerText
-        queList.push(Que);
-        // Here Comes For Ture Or False
-
-        return queList;
-
-    }
-    else if (getType === 'mradio') {
-
-        //Here Comes For Multi Radio Buttons
-        let queList = []
-        let Que = document.getElementsByClassName("qtext")[0].innerText
-        queList.push(Que);
-        // Here Comes For Ture Or False
-
-        return queList;
-
-    }
-    else {
-
-        console.log("Not able to identify type of question !")
-
-        let Que = "Not able to identify type of question !"
-        queList.push(Que);
-
-        return queList;
-
-    }
-
-    return null;
-    //   console.log(document.getElementsByClassName("qtext")[0].innerText)
 }
 
 
 
+// Check if Page Consist MultiPal Questions
 
-function getAnswers() {
-
-    let list = [];
-    if (getType === "mradio" || getType === "tradio") {
+if (isPageMultiQuestions()) {
 
 
-        if ($('input[type=radio]:checked').length > 0) {
 
-            $('input[type=radio]:checked').each(function () {
+    /***************  Initilization  **************/
 
 
-               
+    console.log("This is Page Consis Multipal Questions !");
+    let myQuesions = [];
+    getQuestionSelect();
+    getQuestions();
+    const element = document.getElementsByClassName("formulation clearfix");
 
-                if (this) {
-                    let selectedVal = document.querySelectorAll('[for="' + this.id + '"]')[0].innerText
-                    if (selectedVal.toString().includes(".")) {
-                        let val = selectedVal.toString().split(".")[1].trim();
-                        list.push(val);
-                    } else {
+    document.onmouseup = document.onkeyup = element.onselectionchange = function () {
+        getSeletdTexts(getSelectionText());
+    };
 
-                        let val = selectedVal.toString();
-                        list.push(val);
 
-                    }
-
-                    console.log(list);
-                  
-
-                } else {
-                    // Other Error
-                    console.log("Error Is Occur !")
-                
-                }
-            });
-        } else {
-            console.log("plase select queation")
+    chrome.runtime.onMessage.addListener((msg, sender, response) => {
+        
+        if ((msg.from === 'popup') && (msg.subject === 'question')) {
             
+    
+            var sendQue = {
+                question: myQuesions
+            };
+    
+            // Directly respond to the sender (popup), 
+            // through the specified callback.
+            response(sendQue);
+            console.log("Send Response !")
         }
+    });
 
-    }
-    else if (getType === "text") {
-
-        
-        console.log("Inside get value  !");
-        $(".clearfix input[type=text]").each(function () {
-            var input = $(this).val();
-            list.push(input);
-        });
-        console.log(list)
-        
-
-    }
-    else if (getType === "select") {
-
-        for(let i=0;i< getLen;i++){
-          list.push($( $(".clearfix :selected")[i]).text());
-        }
-        console.log(list)
-
-    }
-
-
-    //    });
-
-    return list;
-
-}
-
-
- 
-//chrome.runtime.sendMessage({ status: true, type: "searchQue", que: { question: getQuestionText(), qtype: getType } });
-
-
-$(".submitbtns .mod_quiz-next-nav").click(function () {
 
     
-    console.log("See this - >")
-    console.log(getAnswers())
-  
-    chrome.runtime.sendMessage({ status: true, type: "sendQue", que: { question: getQuestionText(),answer:  getAnswers() , qtype: getType } });
 
+    /***************  Functions  **************/
 
+    function getSelectAnsEvent(e) {
 
-});
+        /**
+         *  This event is occer when user select answer from drop down 
+         *  and return question text and answer of contorl  
+         */
+        let que  = e.target.previousElementSibling.parentNode.previousElementSibling.innerText.toString();
+        let ans  = e.target.options[e.target.options.selectedIndex].innerText.toString();
+        sendDataToBackgroud([que],[ans]);
+        delete que;
+        delete ans;
+       
 
-
-
-chrome.runtime.sendMessage({ status: true, text: "script loded !" });
-
-
-
-chrome.runtime.onMessage.addListener((msg, sender, response) => {
-    // First, validate the message's structure.
-    if ((msg.from === 'popup') && (msg.subject === 'question')) {
-
-
-        var sendQue = {
-            question: getQuestionText(),
-            qtype: getType
-        };
-
-        // Directly respond to the sender (popup), 
-        // through the specified callback.
-        response(sendQue);
     }
-});
 
 
+    //Get Question Type 
+    function getQuestionSelect() {
+
+
+        /**
+         *  This  function is place change events on all drop-down 
+         *  if user is select ans this event return question and 
+         *  answer also this function return count of select funtions
+         */
+
+
+
+        let selectLen = document.querySelectorAll('.clearfix select').length
+        let selectControls = document.querySelectorAll('.clearfix select')
+
+
+        // Here we place simple event on every function
+        for (let i = 0; i < selectLen; i++) {
+
+            selectControls[i].addEventListener("change", getSelectAnsEvent);
+
+        }
+
+        (selectLen > 0) ? console.log("Event is placed on all selects !") : console.log("")
+
+        return selectLen
+
+    }
+
+
+    function getQuestions() {
+
+
+        /**
+         *  This function place events on text or radio button 
+         *  both events are different so first we check control 
+         *  type and after assign event.
+         */
+
+        let allInput = document.getElementsByTagName('input')
+        let allInputLen = document.querySelectorAll('input').length
+        let radioLen = 0
+        let textLen = 0
+
+        for (let i = 0; i < allInputLen; i++) {
+
+
+            if (allInput[i].type === "text") {
+
+
+                allInput[i].addEventListener("change", getTextInputAnsEvent)
+                textLen++;
+
+            }
+            else if (allInput[i].type === "radio") {
+
+
+                allInput[i].addEventListener("change", getRadioSelectAnsEvent)
+
+                radioLen++;
+
+
+            }
+
+        }
+
+
+
+        console.log("Event is placed in radio and text inputs !")
+
+        return { "radio": radioLen, "txtInput": textLen }
+
+
+
+    }
+
+
+    function getRadioSelectAnsEvent(e) {
+
+
+        /**
+         *  This event is occure when user select radio button and send 
+         *  question and answer in background script 
+         */
+
+        let que =  e.target.parentElement.parentElement.parentElement.previousElementSibling.innerText.toString();
+        let ans = e.target.nextElementSibling.innerText.toString();
+
+        if (ans.includes(".")) {
+            ans = ans.split(".")[1];
+        } 
+        sendDataToBackgroud([que],[ans]);
+        delete que;
+        delete ans;
+
+
+    }
+
+
+
+
+    function getTextInputAnsEvent(e) {
+
+        /**
+         *  This event Occure when user type in text box and leave from this control
+         *  after user leave this function ,function is run and  sned answer and text
+         *  value to background script  but if text box is more than one this function
+         *  is not able to get answer of  both inputs 
+         */
+       
+        let question = e.target.parentElement.innerText.toString().replace("Answer", "").replaceAll("\"", "");
+        let answers = e.target.value;
+        if (answers) {
+
+            sendDataToBackgroud([question],[answers]);
+
+        }
+
+        delete question;
+        delete answers;
+
+    }
+
+
+
+
+
+
+
+    function getSelectionText() {
+
+        /**
+         *      This Function is return seletd text by mouse i use this function
+         *      for search specific question from data base if user have multipal
+         *      question on single page 
+         *      Scroces : https://stackoverflow.com/questions/5379120/get-the-highlighted-selected-text
+         */
+
+        var text = "";
+        var activeEl = document.activeElement;
+        var activeElTagName = activeEl ? activeEl.tagName.toLowerCase() : null;
+        if (
+            (activeElTagName == "textarea") || (activeElTagName == "input" &&
+                /^(?:text|search|password|tel|url)$/i.test(activeEl.type)) &&
+            (typeof activeEl.selectionStart == "number")
+        ) {
+            text = activeEl.value.slice(activeEl.selectionStart, activeEl.selectionEnd);
+        } else if (window.getSelection) {
+            text = window.getSelection().toString();
+        }
+        return text;
+    }
+ 
+
+    function getSeletdTexts(val) {
+
+        if (val.toString() != " " && val.toString() != "" && val.toString().length > 1) {
+           myQuesions = [val];
+        }
+
+    }
+
+
+
+
+
+
+
+} else {
+
+    console.log("This  page consist one question on single page !");
+
+
+    chrome.runtime.onMessage.addListener((msg, sender, response) => {
+        
+        if ((msg.from === 'popup') && (msg.subject === 'question')) {
+            
+    
+            var sendQue = {
+                question: getQuestionText()
+            };
+    
+            // Directly respond to the sender (popup), 
+            // through the specified callback.
+            response(sendQue);
+            console.log("Send Response !")
+        }
+    });
+    
+    
+
+    if (document.querySelectorAll(".submitbtns .mod_quiz-next-nav").length > 0) {
+        document.querySelectorAll(".submitbtns .mod_quiz-next-nav")[0].addEventListener("click", function () {
+            console.log("Click");
+            sendDataToBackgroud(getQuestionText(),getAnswers());
+        });
+    }
+
+    // Return Type of Question on Page 
+    function getQuestionType() {
+
+        /**
+         * This function return type of quesion on single page 
+         * if page consist radio button this function return "tradio" or "mradio"
+         * if page consist text input this function return "text"
+         * if page consist select this function retun select 
+         */
+
+        // First we check page conist  radio button
+        var control = document.querySelectorAll('.clearfix input[type=radio]')
+        var CTYPE = "radio"
+
+        // If radio button is not consist than
+        if (control.length === 0) {
+
+            control = document.querySelectorAll('.clearfix input[type=text]')
+            CTYPE = "text"
+
+            // If text field not consist than
+            if (control.length === 0) {
+
+
+                control = document.querySelectorAll('.clearfix select')
+                CTYPE = "select"
+
+
+            }
+
+        }
+
+
+        // Now Check Questions Type Which Type Of Question is Given
+        let QType = CTYPE
+        let CLen = control.length
+        if (QType === 'radio') {
+
+
+            // If Page Consist More then Two Radio Buton So Is Multi Option Quesion 
+            if (CLen > 2) {
+
+                return { type: 'mradio', len: CLen }
+
+            } else if (CLen === 2) { // If Page Consist  Two Radio Buton So Is True or False Quesion 
+
+                        return { type: 'tradio', len: CLen }
+
+            }
+            else {
+
+
+                console.log("Insiede Queastion type functinon -> unknow question type !")
+                return 'null'
+
+
+            }
+
+        }
+        else if (QType === 'text') {
+
+            //  If Page Consist Input Fileds this return  length or type text
+            return { type: 'text', len: CLen }
+        }
+        else if (QType === 'select') {
+
+            //If Page Consist Select Control This Return Type as "select" and that lenght 
+            return { type: 'select', len: CLen }
+
+        }
+        else {
+
+            // If Any Control Not Found This will retun null
+            return 'null'
+
+        }
+
+
+    }
+
+
+
+
+    // Get question text 
+    function getQuestionText() {
+
+        /**
+         *  Basically this function detect question text from single page quiz 
+         *  and return this text for searching purpose 
+         */
+
+        // Gloabe variables that consist question type and length
+        let getType = getQuestionType().type;
+        let getLen = getQuestionType().len;
+
+
+        // Check questionis multi radio 
+        let queList = []
+        if (getType === 'mradio') {
+
+            //Here Comes For Multi Radio Buttons
+            queList = [];
+            let Que = document.getElementsByClassName("qtext")[0].innerText.toString();
+            queList.push(Que);
+            delete Que;
+            return queList;
+
+        }
+        else if (getType === 'tradio') {
+
+
+            queList = [];
+            let Que = document.getElementsByClassName("qtext")[0].innerText.toString();
+            queList.push(Que);
+
+            delete Que;
+            return queList;
+
+        }
+        else if (getType === 'text') {
+
+            //Here Comes For Text Value
+            queList = []
+            if (getLen === 1) {
+                let Que = document.getElementsByClassName("qtext")[0].innerText.toString().replaceAll("/[^a-zA-Z ]/g", "")
+                queList.push(Que);
+                delete Que;
+                return queList;
+            }
+            else if (getLen >= 2) {
+
+                let Que = document.querySelectorAll(".clearfix p")[0].innerText.toString().replaceAll("Answer", "");
+                queList.push(Que);
+                delete Que;
+                return queList;
+            }
+
+
+        }
+        else if (getType === 'select') {
+
+            //Here we get quesions of drop down
+            queList = [];
+            const matchString = "Match the followings:";
+            const currentQue = document.getElementsByClassName("qtext")[0].innerText.toString();
+            if (currentQue.includes(matchString)) {
+
+                for (let i = 0; i < getLen; i++) {
+                    let Que = document.querySelectorAll("select")[i].parentElement.previousElementSibling.innerText.toString();
+                    queList.push(Que);
+                    delete Que;
+                }
+                return queList;
+
+            } else {
+
+
+                let Que = document.getElementsByClassName("qtext")[0].innerText.toString();
+                queList.push(Que);
+                delete Que;
+                return queList;
+
+
+            }
+
+
+
+
+        }
+        else { // What if this not able to find question 
+
+            console.log("Not able to identify type of question !");
+
+            let Que = "Not able to identify type of question !"
+            queList.push(Que);
+
+            return queList;
+
+        }
+
+    }
+
+
+    function getAnswers() {
+
+        let getType = getQuestionType().type;
+        let getLen = getQuestionType().len;
+
+        /**
+         *  This function is get answers that user select when user go to next page this  
+         *  function is responsible to get answer text 
+         * 
+         */
+
+        // Empty Array for store answers
+        let Alist = [];
+
+        if (getType === "mradio" || getType === "tradio") {
+
+
+            // Get All Radio Buttons  Value That Checkd
+            let seletedAns = (document.querySelectorAll("input[type=radio]:checked")[0] != "undefined")? document.querySelectorAll("input[type=radio]:checked")[0] : null;
+            
+
+            if (seletedAns !=null ) {
+
+                let selectedVal = document.querySelectorAll('[for="' + seletedAns.id + '"]')[0].innerText.toString();
+                
+                // Check ans is consist "." 
+                if (selectedVal.toString().includes(".")) {
+                    // Here we remove . from ans 
+                    let val = selectedVal.toString().split(".")[1].trim();
+                    Alist.push(val);
+                    delete val;
+                } else {
+
+                    let val = selectedVal.toString();
+                    Alist.push(val);
+                    delete val;
+
+                }
+
+
+            }
+
+        }
+        else if (getType === "text") {
+
+            // Take Ans From Text Input 
+            const ansInputLen = document.querySelectorAll(".clearfix input[type=text]").length;
+            const ansInputs = document.querySelectorAll(".clearfix input[type=text]");
+            for (let i = 0; i < ansInputLen; i++) {
+                var input = ansInputs[0].value;
+                Alist.push(input);
+            }
+
+
+        }
+        else if (getType === "select") {
+
+            for (let i = 0; i < getLen; i++) {
+                let Que = document.querySelectorAll("select")[i].options[document.querySelectorAll("select")[i].selectedIndex].innerText.toString();
+                Alist.push(Que);
+                delete Que;
+
+            }
+
+
+        }
+
+        return Alist;
+    }
+
+
+
+
+    
+
+
+}
+
+
+function sendDataToBackgroud(que,ans){
+
+    let QueAns = []
+
+    if(que.length == ans.length){
+
+        for(let i = 0; i < ans.length;i++){
+            QueAns.push({"que":que[i],"ans":ans[i]})
+        }
+
+    }
+    else{
+
+        if(que.length == 1 && ans.length >= 1)
+        {
+
+            let tempString= "";
+            for(let i = 0; i < ans.length;i++){
+                tempString += ans[i]+","
+            }
+
+            QueAns.push({"que":que[0],"ans":tempString});
+            delete tempString;
+
+        }
+       else if(que.length > 1 && ans.length > 1){
+
+        
+        let tempQuestion= "";
+        let tempAnswer= "";
+
+        for(let i = 0; i < ans.length;i++){
+            tempAnswer += ans[i]+","
+        }
+
+        for(let i = 0; i < que.length;i++){
+            tempQuestion += que[i]+","
+        }
+        QueAns.push({"que":tempQuestion,"ans":tempAnswer});
+        delete tempQuestion;
+        delete tempAnswer;
+       } 
+
+
+    }
+
+    console.log(QueAns);
+
+
+    chrome.runtime.sendMessage({ type:"sendAns" ,status: true, data: QueAns});
+
+
+
+}
+
+
+
+
+chrome.runtime.sendMessage({ type:"notify" ,status: true, data: "script loded !" });
 

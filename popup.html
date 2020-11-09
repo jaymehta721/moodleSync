@@ -4,133 +4,379 @@
 <head>
   <meta charset="utf-8">
   <title>Moodle Sync</title>
- 
- 
-  <link rel="stylesheet" href="materialize.min.css">
-  <script src="materialize.min.js"></script>
+
 
   <style>
-    html,
-    body {
 
-      height: 520px;
-      width: 470px;
-      padding: 5px;
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-    }
+body {
+
+  
+  height: auto;
+  min-height: 531px;
+  width: 500px;
+  font-family: sans-serif;
+  font-weight: bold;
+  background-size: cover;
+  border: 4px solid #dadbdb;
+  padding: 10px;
+ 
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #fff;
+  width: 470px;
+  height: 530px;
+  border: 4px solid #23292e;
+  border-radius: 5px;
+  padding-top: 30px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 462px;
+  padding-top: 25px;
+  padding-bottom: 19px;
+  padding-left: 40px;
+  padding-right:40px ;
+
+}
+
+input {
+  height: 45px;
+  padding: 10px;
+  border-radius: 4px;
+  border: 2px solid #dadbdb ;
+  background-color: #ebeff0;
+}
+
+input + input {
+  margin-top: 15px;
+}
+
+input::placeholder {
+  color: #9C98A6;
+}
+
+button {
+  margin-top: 20px;
+  height: 45px;
+  background: #2c3e50;
+  border: 0;
+  border-radius: 4px;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.header-text {
+  
+  text-align: center;
+  font-size: 23px;
+}
+
+.header-text-logo{
+  color: #000;
+  margin-bottom: 16px;
+  opacity: 1;
+  margin-top: 7%;
+  margin-bottom: 3%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  text-align: center;
+  width: 154px;
+  margin-left: 0%;
+}
 
 
-    .w {
 
-      width: 448px;
-      ;
-    }
 
-    .login {
+.aa_h2 {
+  font: 100 5rem/1 Roboto;
+  text-transform: uppercase;
+}
 
-      margin: 50px auto;
-      width: 399px;
-    }
+table {
+  background: #fff;
+   min-width: 470px;
+   width: 470px;
+   margin-top: 32px
+}
+
+table, thead, tbody, tfoot, tr, td, th {
+  text-align: center;
+  margin: auto;
+  border: 1px solid #23292e;
+  padding: 1rem;
+  width: 50%;
+}
+
+.table {
+  display: table;
+  width: 50%;
+}
+
+.tr {
+  display: table-row;
+}
+
+.thead {
+  display: table-header-group;
+}
+
+.tbody {
+  display: table-row-group;
+}
+
+.tfoot {
+  display: table-footer-group;
+}
+
+.col {
+  display: table-column;
+}
+
+.colgroup {
+  display: table-column-group;
+}
+
+.td, .th {
+  display: table-cell;
+  width: 50%;
+}
+
+.caption {
+  display: table-caption;
+}
+
+.table,
+.thead,
+.tbody,
+.tfoot,
+.tr,
+.td,
+.th {
+  text-align: center;
+  margin: auto;
+  padding: 1rem;
+}
+
+.table {
+  background: #fff;
+  margin: auto;
+  border: none;
+  padding: 0;
+  margin-bottom: 5rem;
+}
+
+.th {
+  font-weight: 700;
+  border: 1px solid #23292e;
+}
+.th:nth-child(odd) {
+  border-right: none;
+}
+
+.td {
+  font-weight: 300;
+  border: 1px solid #23292e;
+  border-top: none;
+}
+.td:nth-child(odd) {
+  border-right: none;
+}
+.quiz {
+    padding: 0 30px 20px 30px;
+    max-width: 960px;
+    margin: 0 auto;
+}
+.quiz-question {
+    font-weight: bold;
+    display: block;
+    padding: 30px 0 10px 0;
+    margin: 0;
+}
+
+
+*{
+    margin: 0;
+    padding: 0;
+}
+#container{
+    width: 300px;
+    height: 300px;
+    margin-left: calc( 50vw - 162px);
+    margin-top: calc( 50vh - 171px);
+    position: absolute;
+}
+
+
+@keyframes rotation{
+    from {transform: rotate(0deg);}
+    to {transform: rotate(-360deg);}
+}
+.three-quarters-circle{
+    position: absolute;
+    left: 80px;
+    top: 80px;
+
+    box-sizing: border-box;
+    width: 140px;
+    height: 140px;
+    border: 2px solid #23292e;
+    border-radius: 70px;
+    border-top-color: transparent;
+    background-color: transparent;
+
+    animation: rotation 0.8s linear infinite;
+}
+
+.full-circle{
+    width: 0;
+    height: 0;
+    border-radius: 100px;
+    transform: rotate(45deg);
+    border: 50px solid #23292e;
+    border-right-color: #3c3f41;
+    border-top-color: rgb(80, 76, 78);
+
+    position: absolute;
+    left: 100px;
+    top: 100px;
+}
+
+@keyframes showLeft{
+    from {transform: rotate(45deg);}
+    25% {transform: rotate(-135deg);} 
+    50% {transform: rotate(-135deg);} 
+    75% {transform: rotate(-315deg);} 
+    to {transform: rotate(-315deg);}
+}
+@keyframes showRight{
+    from {transform: rotate(45deg);z-index: 6;}
+    25% {transform: rotate(-135deg);} 
+    50% {transform: rotate(-135deg);z-index: 6;} 
+    50.001% {transform: rotate(-135deg);z-index: 5;} 
+    75% {transform: rotate(-315deg);z-index: 5;} 
+    99.999% {transform: rotate(-315deg);z-index: 5;} 
+    to {transform: rotate(-315deg);z-index: 6}
+}
+.two-quarters-circle{
+    width: 0;
+    height: 0;
+    border: 50px solid transparent;
+    border-radius: 100px;
+    position: absolute;
+    left: 100px;
+    top: 100px;
+    transform: rotate(45deg);
+}
+#half-left{
+    border-left-color: rgb(105, 105, 105);
+    border-bottom-color: rgb(107, 107, 107);
+    animation: showLeft 2s linear infinite;
+    z-index: 6;
+}
+#half-right{
+    border-bottom-color: rgb(153, 153, 153);
+    border-left-color: #ebeff0;
+    
+    animation: showRight 2s linear infinite;
+    animation-delay: 0.50s;
+    z-index: 5;
+}
+
+#errMsg{
+  
+  font-size: 12px;
+    font-weight: 200;
+    padding: 11px;
+    color: red;
+
+}
+
+
   </style>
 
-
-
-
+  <script src="popup.js" async></script>
 </head>
-
-
-
 
 <body>
 
-  <div id="sections">
+<div>
+  <div class="login" style="display: none;" >
 
-
-    <div id="sections_login" class="login">
-
-
-
-      <div class="row">
-
-        <div class="row">
-          <div class="col s12 m6">
-            
-            <form class="col s12 card blue-grey darken-1">
-              <div class="card-content white-text">
-                <span class="card-title">Register</span>
-              <div class="row">
-                <div class="input-field col s12">
-                  <input id="first_name" type="text" class="validate white-text">
-                  <label for="first_name" class="white-text">Name</label>
-                </div>
-              
-              </div>
-              <div class="row">
-                <div class="input-field col s12">
-                  <input id="email" type="email" class="validate white-text">
-                  <label for="email "  class="white-text">Email</label>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col s5">
-                  <button id="subData" style="width:249px; transform: translateX(12%);" class="btn waves-effect waves-light white-text "
-                      type="button">
-                      Submit
-                    </button>
-                </div>
-
-              </div>
-            </div>
-            </form>
-
-          </div>
-        </div>
-      </div>
-
-
-
-
-
-    </div>
-
-
-    <div id="sections_display" style="display: none;">
-
-
-      <h6 id="Que">Queation </h6>
-      <br/>
-      <br/>
-      <div >    
-        
-        <table id="tables" border="1" id="tabls" cellpadding="3" style="border-collapse:collapse;width: 443px;">
-        <tr>
-          <td nowrap><B>Names</B></td>
-          <td nowrap><B>Answers</B></td>
-
-        </tr>
-        
+    <div class="container">
+      <div class="header-text">
+        <img class="header-text-logo"
+          src="icon.png" alt="logo">
+        <p class="header-text-description">Login</p>
       
-      </table>
-
-      <blockquote id="msg" style="display: none;"> </blockquote>
-
+      </div>
+      <form>
+        <p id="errMsg" ></p>
+        <input type="text" placeholder="Name" name="name" id="name" autocomplete="off" autofocus >
+        <input type="text" placeholder="Email" name="email" id="email" autocomplete="off" autofocus>
+        <input type="password" name="password" id="password" placeholder="Password" autocomplete="off" required>
+        <button type="button" id="login_btn" name="login">Login</button>
+      </form>
     </div>
-
-
-
-    </div>
-
+  
 
   </div>
 
+  <div class="process"  >
 
-  <script src="jquery-3.5.1.min.js"></script>
-  <script src="firebase-app.js"></script>
-  <script src="firebase-firestore.js"></script>
-  <script src="firebase.js"></script>
 
-  <script src="popup.js"></script>
+    <div id="container">
+      <div class="full-circle"></div>
+      <div id="half-left" class="two-quarters-circle"></div>
+      <div id="half-right" class="two-quarters-circle"></div>
+      <div class="three-quarters-circle"></div>
 
+      
+        
+  </div>
+
+  </div> 
+
+  <div class="display_Sections" style="display: none;"  >
+    <div class="quiz">
+  
+      <h2 class="quiz-question">Q1 : How do you spell "Red"?</h2>
+    
+    </div>
+    <table style="margin-top: 50px;">
+      <thead>
+        <tr>
+          <th style="font-size: 15px;">Names</th>
+          <th style="font-size: 15px;">Answers</th>
+        </tr>
+      </thead>
+      <tbody>
+     
+      </tbody>
+   
+    </table>
+
+  </div>
+
+</div>
 </body>
 
 

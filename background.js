@@ -1,137 +1,55 @@
 
 
-
 chrome.runtime.onMessage.addListener(function (msg, sender, sendRes) {
 
-    console.log("In Side Lister ")
+    /**
+     * This event is occer when any content script or popup script message or data 
+     * that data is recive by this event and aftar recive data this data send on 
+     * data base.
+     */
 
-    if (msg.status) {
+    if (msg.type === "notify" && msg.status) {
 
-
-
-        console.log("In Status is Ture ")
-        chrome.pageAction.show(sender.tab.id);
-            
-
-        if (msg.type === "sendQue") {
-
+        // Notify content is loded 
+        console.log("Message : ", msg.data);
 
 
-            console.log("Inside sendQue is Ture ")
+    } else if (msg.type === "sendAns" && msg.status) {
 
-            
-            console.log(msg.que.question)
-            
-            console.log(msg.que)
+        /**
+         *  Send Data To Data Base 
+         */
 
-            if (msg.que.question && msg.que.answer) {
-
-
-                console.log("Inside mag and  is ans tav ")
+        chrome.storage.sync.get(["data"], function (items) {
 
 
 
-                let Qlen = msg.que.question.length
-                let Alen = msg.que.answer.length
-
-                let Questions = "";
-                let Answer = "";
-
-               
-                    Questions += msg.que.question[0]                
+            if (items.data) {
 
 
-
-
-                for (let i = 0; i < Alen; i++) {
-                    Answer += msg.que.answer[i] + " , "
+                console.log(msg.data);
+                for(let i=0;i<msg.data.length;i++){
+                    console.log(msg.data[i].que," : ",msg.data[i].ans);
+                saveQuestionAnswer({ "name": items.data.name, "question": msg.data[i].que, "answer": msg.data[i].ans });
                 }
-
-
-                console.log("Answer: "+Answer)
-
-                console.log("Questions: "+Questions)
-                chrome.storage.sync.get(["data"], function (items) {
-                    if (items.data) {
-
-                        
-                        
-                        saveData(items.data.name, Questions, Answer);
-
-
-                    } else {
-
-                        console.log("Data is not find !");
-
-                    }
-                });
-
-
-
-            } else {
-
-
-                // Send Error 
 
             }
 
 
-
-        }
-        // else if (msg.type === "searchQue") {
-
-        //     let Questions = "";
-        //     let Qlen = msg.que.question.length
-
-
-        //     for (let i = 0; i < Qlen; i++) {
-        //         Questions += msg.que.question[i] + "  "
-        //     }
-
-
-        //     // let datas = searchAnswer(Questions)
-        //     // datas.then(function (querySnapshot) {
-
-        //     //     let lists = []
-
-        //     //     querySnapshot.forEach(function (doc) {
-
-        //     //         $(doc.data()).each(function () {
-
-        //     //             console.log(this.question.toString().localeCompare(Questions))
-        //     //             if (this.question.toString().localeCompare(Questions) === 0) {
-
-        //     //                 console.log("This Questions : " + this.question)
-        //     //                 console.log("This Answer : " + this.answer)
-        //     //                 console.log("This Name : " + doc.id)
-        //     //                 lists.push({ "name": doc.id, "answer": this.answer })
-
-
-        //     //             }
-
-
-        //     //         });
-
-        //     //     });
-
-            
-
-            
+        });
 
 
 
-        //     //     console.log("Execute Script  !");
 
-        //     //     console.log("lists is sended !");
-
-        //     // });
-
-        // }
+    }
 
 
 
-//   }
 
-}
+
+
+
+
+
 
 });
