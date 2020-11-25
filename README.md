@@ -1,3 +1,6 @@
+![Extension Icon](https://github.com/jaymehta721/moodleSync/blob/main/icon128.png)
+
+
 # moodleSync
 If someone has already submit questions that come to another so this extension is help  to get answer.
 
